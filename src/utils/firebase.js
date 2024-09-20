@@ -1,4 +1,4 @@
-
+import { initializeApp } from "firebase/app";
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -14,8 +14,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-
-
+const app = initializeApp(firebaseConfig);
 // Set up Google Auth Provider
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
