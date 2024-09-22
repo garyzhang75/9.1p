@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"; // Added 'signOut' import
 
 // Firebase configuration object
 const firebaseConfig = {
@@ -15,7 +15,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-console.log(app)
+
 // Set up Google Auth Provider
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
@@ -24,24 +24,25 @@ provider.setCustomParameters({
 
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signOutUser = () => signOut(auth); // Added this line to enable signing out
 
 export const db = getFirestore();
 
 // Function to create user document from Auth
-export const createUserDocFromAuth = async (userAuth,additionalInformation ={}) => {
-    if(!userAuth) return;
+export const createUserDocFromAuth = async (userAuth, additionalInformation = {}) => {
+    if (!userAuth) return;
 
     const userDocRef = doc(db, 'users', userAuth.uid); // Assuming 'users' is your collection
     const userSnapshot = await getDoc(userDocRef);
 
     // If the user document doesn't exist, create it
     if (!userSnapshot.exists()) {
-        const { displayName, email } = userAuth; // Destructuring displayName and email
-        const createdAt = new Date(); // Getting the current date
+        const { displayName, email } = userAuth;
+        const createdAt = new Date();
 
         try {
             await setDoc(userDocRef, {
-                displayName, // Correct spelling
+                displayName,
                 email,
                 createdAt,
                 ...additionalInformation
@@ -53,13 +54,15 @@ export const createUserDocFromAuth = async (userAuth,additionalInformation ={}) 
 
     return userDocRef;
 };
-export const createAuthUserWithEmailAndPassword = async (email,password) =>{
-    if(!email || !password) return;
 
-    return await createUserWithEmailAndPassword(auth,email,password)
-}
-export const signinAuthUserWithEmailAndPassword = async (email,password) =>{
-    if(!email || !password) return;
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+    if (!email || !password) return;
 
-    return await signInWithEmailAndPassword(auth,email,password)
-}
+    return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const signinAuthUserWithEmailAndPassword = async (email, password) => {
+    if (!email || !password) return;
+
+    return await signInWithEmailAndPassword(auth, email, password);
+};
