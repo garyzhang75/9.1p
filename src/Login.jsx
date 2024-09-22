@@ -88,7 +88,7 @@ const Login = () => {
                             <button type="submit" className="login-btn">Login</button>
                         </form>
 
-                        <button onClick={signInWithGooglePopup} className="google-login-btn">Log in with Google</button>
+                        <button onClick={logGoogleUser} className="google-login-btn">Log in with Google</button>
                         <hr/>
                         <Link to='/signup'>
                             Sign up
