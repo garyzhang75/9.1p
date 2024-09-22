@@ -90,11 +90,13 @@ const Login = () => {
 
                         <button onClick={logGoogleUser} className="google-login-btn">Log in with Google</button>
                         <hr/>
-                        <button onClick={logGoogleUser} className="google-login-btn">Log in with Google</button>
-                        <hr/>
+                         <button onClick={handleSignOut} className="google-login-btn">Log in with Google</button>
+                         <hr/>
                         <Link to='/signup'>
                             Sign up
                         </Link>
+                       
+                       
                     </div>
                 </>
             )}
