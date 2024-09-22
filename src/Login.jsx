@@ -4,7 +4,11 @@ import './App.css';
 import { Link } from 'react-router-dom';
 import { signInWithGooglePopup, createUserDocFromAuth, signinAuthUserWithEmailAndPassword, signOutUser, auth } from './utils/firebase';
 import './Login.css';
-
+const logGoogleUser = async () => {
+    const { user } = await signInWithGooglePopup();
+    const userDocRef = await createUserDocFromAuth(user);
+    console.log(userDocRef)
+};
 const Login = () => {
     const [contact, setContact] = useState({
         email: '',
